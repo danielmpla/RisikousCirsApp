@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="de.hszg.fei.RisikousCirsApp" version="1.0.0">
+    <name>CIRS App</name>
+    <description>
+        CIRS-App für Risikous
+    </description>
+    <author email="danielmpla@gmail.com" href="http://f-ei.hszg.de">
+        Christopher Voigt und Daniel Müssig
+    </author>
+    <access origin="*"/>
+    <preference name="fullscreen" value="false"/>
+    <preference name="webviewbounce" value="true"/>
+</widget>
+ 

@@ -10,5 +10,6 @@
     <access origin="*"/>
     <preference name="fullscreen" value="false"/>
     <preference name="webviewbounce" value="true"/>
+    <icon src="risikous.png"/>
 </widget>
  

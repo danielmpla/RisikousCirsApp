@@ -21,14 +21,17 @@ function send () {
         jsonObject.riskEstimation.occurrenceRating.occurrenceRating = $("input:radio[name ='occurrenceRating']:checked").val();
         jsonObject.riskEstimation.significance.significance = $("input:radio[name ='significance']:checked").val();
 
-		$.ajax({
-			headers : { Accept : "application/json; charset=utf-8", "Content-Type" : "application/json; charset=utf-8" },
+	$.ajax({
+		headers : { Accept : "application/json; charset=utf-8", "Content-Type" : "application/json; charset=utf-8" },
         	type: "POST",
         	url: "http://141.46.136.3:8080/RisikousRESTful/rest/questionnaire/addQuestionnaire",
         	data: JSON.stringify(jsonObject),
         	success: function (data, textStatus, jqXHR){
         				$('#report').html(JSON.stringify(data));
         			 },
+                error: function (data, textStatus, jqXHR){
+                    alert(data);
+                },
         	dataType: "json"
         });
     }

@@ -177,31 +177,31 @@ function simpleTextarea (id, text, required){
         var dateTime;
         $.each(data, function (key, value) {
             if (key == "contactInformation") {
-                $('#report').append('<div id="' + key + '">' + '<span class="text">' + data.contactInformation.text + '</span><br>' + simpleTextarea(data.contactInformation.text, data.contactInformation.required) + '</div>', $('#report'));
+                $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.contactInformation.text + '</span><br>' + simpleTextarea(data.contactInformation.text, data.contactInformation.required) + '</div>', $('#report'));
             }
             if (key == "immediateMeasure"){
-                $('#report').append('<div id="' + key + '">' + '<span class="text">' + data.immediateMeasure.text + '</span><br>' + simpleTextarea(data.immediateMeasure.text, data.immediateMeasure.required) + '</div>', $('#report'));
+                $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.immediateMeasure.text + '</span><br>' + simpleTextarea(data.immediateMeasure.text, data.immediateMeasure.required) + '</div>', $('#report'));
             }
             if (key == "opinionOfReporter"){
                 $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.opinionOfReporter.text + '</span>' + '<br><span class="text">' + data.opinionOfReporter.organisationalFactors.text + '</span>' + '<br />' + simpleTextarea("organisationalFactors", data.opinionOfReporter.organisationalFactors.text, data.opinionOfReporter.organisationalFactors.required) + '<br><span class="text">' + data.opinionOfReporter.personalFactors.text + '</span>' + '<br />' + simpleTextarea("personalFactors", data.opinionOfReporter.personalFactors.text, data.opinionOfReporter.personalFactors.required) + '<br><span class="text">' + data.opinionOfReporter.additionalNotes.text + '</span><br />' + simpleTextarea("additionalNotes", data.opinionOfReporter.additionalNotes.text, data.opinionOfReporter.additionalNotes.required) + '</div>', $('#report'));
             }
             if (key == "incidentDescription"){
-                $('#report').append('<div id="' + key + '">' + '<span class="text">' + data.incidentDescription.text + '</span><br>' + simpleTextarea(data.incidentDescription.text, data.incidentDescription.required) + '</div>', $('#report'));
+                $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.incidentDescription.text + '</span><br>' + simpleTextarea(data.incidentDescription.text, data.incidentDescription.required) + '</div>', $('#report'));
             }
             if (key == "location"){
-                $('#report').append('<div id="' + key + '">' + '<span class="text">' + data.location.text + '</span><br>' + simpleTextarea(data.location.text, data.location.required) + '</div>', $('#report'));
+                $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.location.text + '</span><br>' + simpleTextarea(data.location.text, data.location.required) + '</div>', $('#report'));
             }
             if (key == "consequences") {
-                $('#report').append('<div id="' + key + '">' + '<span class="text">' + data.consequences.text + '</span><br>' +  simpleTextarea(data.consequences.text, data.consequences.required) + '</div>', $('#report'));
+                $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.consequences.text + '</span><br>' +  simpleTextarea(data.consequences.text, data.consequences.required) + '</div>', $('#report'));
             }
             if (key == "pointOfTime") {
-                $('#report').append('<div id="' + key + '">' + '<span class="text">' + data.pointOfTime.text + '</span><br />' + '<input type="datetime-local" data-clear-btn="false" value="">' + '</div>', $('#report'));
+                $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.pointOfTime.text + '</span><br />' + '<input type="datetime-local" data-clear-btn="false" value="">' + '</div>', $('#report'));
             }
             if(key == "riskEstimation"){
-               $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.riskEstimation.text + '</span><br /><span class="text">' + data.riskEstimation.detectionRating.text + '</span><br />' + '<input type="radio" name="detectionRating" value="1"><input type="radio" name="detectionRating" value="2" checked><input type="radio" name="detectionRating" value="3">' + '<br /><span class="text">' + data.riskEstimation.occurrenceRating.text + '</span><br />' + '<input type="radio" name="occurrenceRating" value="1"><input type="radio" name="occurrenceRating" value="2" checked><input type="radio" name="occurrenceRating" value="3">' + '<br /><span class="text">' + data.riskEstimation.significance.text + '</span><br />' + '<input type="radio" name="significance" value="1"><input type="radio" name="significance" value="2" checked><input type="radio" name="significance" value="3">' + '</div>', $('#report'));
+               $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.riskEstimation.text + '</span><br /><span class="text">' + data.riskEstimation.detectionRating.text + '</span><br />' + '<input id="lowDetectionRating" class="bad" type="radio" name="detectionRating" value="3"><label class="bad" for="lowDetectionRating">Niedrig</label><input id="normalDetectionRating" class="normal" type="radio" name="detectionRating" value="2" checked><label class="normal" for="normalDetectionRating">Mittel</label><input id="highDetectionRating" class="good" type="radio" name="detectionRating" value="1"><label class="good" for="highDetectionRating">Hoch</label>' + '<br /><span class="text">' + data.riskEstimation.occurrenceRating.text + '</span><br />' + '<input id="highOccurenceRating" class="bad" type="radio" name="occurrenceRating" value="3"><label class="bad" for="highOccurenceRating">Hoch</label><input id="normalOccurenceRating" class="normal" type="radio" name="occurrenceRating" value="2" checked><label class="normal" for="normalOccurenceRating">Mittel</label><input id="lowOccurenceRating" class="good" type="radio" name="occurrenceRating" value="1"><label class="good" for="lowOccurenceRating">Niedrig</label>' + '<br /><span class="text">' + data.riskEstimation.significance.text + '</span><br />' + '<input id="highSignificance" class="bad" type="radio" name="significance" value="3"><label class="bad" for="highSignificance">Hoch</label><input id="normalSignificance" class="normal" type="radio" name="significance" value="2" checked><label class="normal" for="normalSignificance">Mittel</label><input id="lowSignificance" class="good" type="radio" name="significance" value="1"><label class="good" for="lowSignificance">Niedrig</label>' + '</div>', $('#report'));
             }
             if (key == "files"){
-                $('#report').append('<div id="' + key + '">' + '<span class="text">' + data.files.text + '</span><br />' + 'files' + '</div>', $('#report'));
+                $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.files.text + '</span><br />' + 'files' + '</div>', $('#report'));
             }
             if (key == "reportingArea") {
                 var options;
@@ -225,7 +225,7 @@ function simpleTextarea (id, text, required){
                             }
                         });
                     });
-                    $('#report').append('<div id="' + key + '">' + '<span class="text">' + data.reportingArea.text + '<br></span><select name="' + data.reportingArea.text + '">' + options + '</select>' + '</div>', $('#report'));
+                    $('#report').append('<div id="' + key + '">' + '<span class="text headline">' + data.reportingArea.text + '<br></span><select name="' + data.reportingArea.text + '">' + options + '</select>' + '</div>', $('#report'));
                     $('#report').append('<input class="menuButton" type="submit" value="Absenden" onclick="send()">', $('#report'))
                 });
             }

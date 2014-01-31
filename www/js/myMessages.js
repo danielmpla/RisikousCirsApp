@@ -24,9 +24,9 @@ function printComment(depth, jsonObject, parentId) {
         var timestamp;
         var text;
         var comment;
-        var button;
+        var button = "";
         var jsonComment;
-        
+
         $.each(all, function(key, value) {
             if (key == "author") {
                 author = '<span class="text">Autor: ' + value + '</span><br/>';
@@ -41,10 +41,10 @@ function printComment(depth, jsonObject, parentId) {
                     text = '<span class="text">Antwort:<br/>' + value + '</span><br/>';
                 }
             }
-            if (key == "id"){
+            if (key == "id") {
                 id = value;
             }
-            if (key == "comment"){
+            if (key == "comment") {
                 jsonComment = value;
             }
         });
@@ -52,13 +52,13 @@ function printComment(depth, jsonObject, parentId) {
         if (depth + 1 < 3 && jsonComment instanceof Object) {
             comment = '<span class="text headline">Antworten<br/></span>' + printComment(depth + 1, jsonComment, id);
         }
-        if (depth != 3) {
-            button = '<input type="button" onclick="addComment(' + id + ', ' + parentId + ')" value="Add Comment"></input><br/>';
+        if (depth != 2) {
+            button = '<input type="button" onclick="addComment(' + id + ')" value="Antworten"></input><br/>';
         }
         if (comment != null) {
-            output = author + timestamp + text + button + comment;
+            output += author + timestamp + text + button + comment;
         } else {
-            output = author + timestamp + text + button;
+            output += author + timestamp + text + button;
         }
     });
     return output;
@@ -66,78 +66,99 @@ function printComment(depth, jsonObject, parentId) {
 
 function addComment(ownId, parentId) {
     var jsonComment;
-    
-    $.each(keyCommentStore, function (arrKey, jsonObject){
-       if(jsonObject.id == ownId.toString()){
-           jsonComment = jsonObject.comment;
-       } 
+
+    $.each(keyCommentStore, function(arrKey, jsonObject) {
+        if (jsonObject.id == ownId.toString()) {
+            jsonComment = jsonObject.comment;
+        }
     });
-    
+
     $('#report').addClass("hidden");
     $('#comment').removeClass("hidden");
 
     //zu kommentierendes Kommentar anzeigen
-     $('#comment').append('<span class="text">Autor: ' + jsonComment.author + '</span><br/>');
-     $('#comment').append('<span class="text">Zeitpunkt: ' + jsonComment.timeStamp + '</span><br/>');
-     $('#comment').append('<span class="text">Kommentar:<br/>' + jsonComment.text + '</span><br/><br/>');
-     
+    if (ownId != parentId) {
+        $('#comment').append('<span class="text">Autor: ' + jsonComment.author + '</span><br/>');
+        $('#comment').append('<span class="text">Zeitpunkt: ' + jsonComment.timeStamp + '</span><br/>');
+        $('#comment').append('<span class="text">Kommentar:<br/>' + jsonComment.text + '</span><br/><br/>');
+    }
     //Kommentar Felder
-    
+
     $('#comment').append('<span class="text">Autor:</span><br/>');
     $('#comment').append('<input type="text" name="name"><br/>');
     $('#comment').append('<span class="text">Kommentar:</span><br/>');
-    $('#comment').append('<textarea id="comment" rows="6"></textarea><br/>');
-    
+    $('#comment').append('<textarea id="commentText" rows="6"></textarea><br/>');
+
     $('#comment').append('<input class="menuButton" type="submit" value="Absenden" onclick="sendComment(' + parentId + ')">');
+}
+
+function addComment() {
+    var jsonComment;
+
+    $.each(keyCommentStore, function(arrKey, jsonObject) {
+        if (jsonObject.id == ownId.toString()) {
+            jsonComment = jsonObject.comment;
+        }
+    });
+
+    $('#report').addClass("hidden");
+    $('#comment').removeClass("hidden");
+
+    //Kommentar Felder
+
+    $('#comment').append('<span class="text">Autor:</span><br/>');
+    $('#comment').append('<input type="text" name="name"><br/>');
+    $('#comment').append('<span class="text">Kommentar:</span><br/>');
+    $('#comment').append('<textarea id="commentText" rows="6"></textarea><br/>');
+
+    $('#comment').append('<input class="menuButton" type="submit" value="Absenden" onclick="sendComment()">');
+}
+
+function sendComment(parentId) {
+    var answer = true;
+
+
+    if (parentId == null) {
+        answer = false;
+        parentId = getParam("id");
     }
 
-function sendComment(parentId){
-    var answer = false;
-    if(parentId == getParam("id")){
-        answer = false;
-    }else{
-        answer = true;
-    }
-    
     var author = "";
     author = $("input:text[name ='name']").val();
-    
+
     var text = "";
-    text = $("#comment").val();
-    
-    if(answer){
+    text = $("#commentText").val();
+
+    if (answer){
         $.ajax({
-		headers : { Accept : "application/json; charset=utf-8", "Content-Type" : "application/json; charset=utf-8" },
-        	type: "POST",
-        	url: "http://141.46.136.3:8080/RisikousRESTful/rest/comment/addAnswer",
-        	data: JSON.stringify({"comment": {"id": parentId, "author": author, "text": text}}),
-        	success: function (data, textStatus, jqXHR){
-        				commentSuccessPage();
-        			 },
-                error: function (data, textStatus, jqXHR){
-                    alert(JSON.stringify({"comment": {"id": parentId, "author": author, "text": text}}));
-                    alert(JSON.stringify(data));
-                },
-        	dataType: "json"
-        });
+        headers: {Accept: "application/json; charset=utf-8", "Content-Type": "application/json; charset=utf-8"},
+        type: "POST",
+        url: "http://141.46.136.3:8080/RisikousRESTful/rest/comment/addAnswer",
+        data: JSON.stringify({"id": parentId.toString(), "author": author, "text": text}),
+        statusCode: {
+            404: function(data, textStatus, jqXHR) {
+            commentSuccessPage();
+            }
+        },
+                dataType: "json"
+    });
     }else{
         $.ajax({
-		headers : { Accept : "application/json; charset=utf-8", "Content-Type" : "application/json; charset=utf-8" },
-        	type: "POST",
-        	url: "	http://141.46.136.3:8080/RisikousRESTful/rest/publication/addComment",
-        	data: JSON.stringify({"comment": {"id": parentId, "author": author, "text": text}}),
-        	success: function (data, textStatus, jqXHR){
-        				commentSuccessPage();
-        			 },
-                error: function (data, textStatus, jqXHR){
-                    alert(JSON.stringify(data));
-                },
-        	dataType: "json"
-        });
+        headers: {Accept: "application/json; charset=utf-8", "Content-Type": "application/json; charset=utf-8"},
+        type: "POST",
+        url: "http://141.46.136.3:8080/RisikousRESTful/rest/publication/addComment",
+        data: JSON.stringify({"id": parentId.toString(), "author": author, "text": text}),
+        statusCode: {
+            404: function(data, textStatus, jqXHR) {
+            commentSuccessPage();
+            }
+        },
+                dataType: "json"
+    });
     }
 }
 
-function commentSuccessPage(){
+function commentSuccessPage() {
     $("#comment").html('<span class="text">Ihr Kommentar wurde erfolgreich gesendet!</span><br/>');
     $("#comment").html('<input type="button" class="menuButton" value="Zurück zur Meldung" onclick="window.location.reload()">');
 }
@@ -151,6 +172,7 @@ $(document).ready(function() {
         json = data;
         $.each(data, function(id, value) {
             if (id == 'title') {
+                $("#headline").text("Mitteilung " + value);
                 $('#report').append('<span class="text headline">Titel</span><br/><span class="text">' + value + '</span><br/>');
             }
             if (id == 'incidentReport') {
@@ -192,6 +214,7 @@ $(document).ready(function() {
                 comments = printComment(0, commentData.comment, id);
                 $('#report').append(comments);
             }
+            $('#report').append('<input type="button" onclick="addComment()" value="Kommentieren"></input>');
         });
     });
 });
